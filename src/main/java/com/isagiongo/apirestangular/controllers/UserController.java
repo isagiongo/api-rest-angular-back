@@ -3,6 +3,8 @@ package com.isagiongo.apirestangular.controllers;
 import com.isagiongo.apirestangular.models.User;
 import com.isagiongo.apirestangular.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,7 +22,8 @@ public class UserController {
     }
 
     @PostMapping("/users")
-    public void addUser(@RequestBody User user) {
-        userRepository.save(user);
+    public ResponseEntity<User> addUser(@RequestBody User user) {
+        User userSave = userRepository.save(user);
+        return ResponseEntity.status(HttpStatus.CREATED).body(userSave);
     }
 }

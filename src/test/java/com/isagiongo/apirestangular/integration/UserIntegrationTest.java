@@ -2,6 +2,7 @@ package com.isagiongo.apirestangular.integration;
 
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
+import org.hamcrest.core.Is;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -15,23 +16,38 @@ import org.springframework.test.context.junit4.SpringRunner;
 public class UserIntegrationTest {
 
 
+    @LocalServerPort
+    private int randomPort;
 
-        @LocalServerPort
-        private int randomPort;
+    @Before
+    public void setUp() {
+        RestAssured.baseURI = "http://localhost/";
+        RestAssured.port = randomPort;
+    }
 
-        @Before
-        public void setUp() {
-            RestAssured.baseURI = "http://localhost/";
-            RestAssured.port = randomPort;
-        }
+    @Test
+    public void deveRetornarOKaoBuscarUsers() {
+        RestAssured
+                .given()
+                .contentType(ContentType.JSON)
+                .get("/users")
+                .then()
+                .statusCode(HttpStatus.OK.value());
+    }
 
-        @Test
-        public void deveRetornarOKaoBuscarUsers() {
-            RestAssured
-                    .given()
+    @Test
+    public void deveRetornarUserSalvo() {
+        String json = "{\"name\":\"isadora\",\"email\": \"isagiongo@hotmail.com\"}";
+        RestAssured
+                .given()
                     .contentType(ContentType.JSON)
-                    .get("/users")
-                    .then()
-                    .statusCode(HttpStatus.OK.value());
-        }
+                    .body(json)
+                    .post("/users")
+                .then()
+                    .statusCode(HttpStatus.CREATED.value())
+                    .body("id", Is.is(6))
+                    .body("name", Is.is("isadora"))
+                    .body("email", Is.is("isagiongo@hotmail.com"))
+        ;
+    }
 }
