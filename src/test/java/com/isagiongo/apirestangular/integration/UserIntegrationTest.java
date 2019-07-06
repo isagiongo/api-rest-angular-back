@@ -1,0 +1,37 @@
+package com.isagiongo.apirestangular.integration;
+
+import io.restassured.RestAssured;
+import io.restassured.http.ContentType;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.http.HttpStatus;
+import org.springframework.test.context.junit4.SpringRunner;
+
+@RunWith(SpringRunner.class)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+public class UserIntegrationTest {
+
+
+
+        @LocalServerPort
+        private int randomPort;
+
+        @Before
+        public void setUp() {
+            RestAssured.baseURI = "http://localhost/";
+            RestAssured.port = randomPort;
+        }
+
+        @Test
+        public void deveRetornarOKaoBuscarUsers() {
+            RestAssured
+                    .given()
+                    .contentType(ContentType.JSON)
+                    .get("/users")
+                    .then()
+                    .statusCode(HttpStatus.OK.value());
+        }
+}

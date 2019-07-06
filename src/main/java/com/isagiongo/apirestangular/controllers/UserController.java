@@ -15,8 +15,8 @@ public class UserController {
     private UserRepository userRepository;
 
     @GetMapping("/users")
-    public Iterable<User> getUser(){
-        return userRepository.findAll();
+    public List<User> getUser(){
+        return (List<User>) userRepository.findAll();
     }
 
     @PostMapping("/users")
