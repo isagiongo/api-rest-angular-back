@@ -2,6 +2,7 @@ package com.isagiongo.apirestangular.services;
 
 import com.isagiongo.apirestangular.models.User;
 import com.isagiongo.apirestangular.repositories.UserRepository;
+import com.isagiongo.apirestangular.services.exceptions.UserNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,8 +21,9 @@ public class UserService {
         return (List<User>) userRepository.findAll();
     }
 
-    public Optional<User> findById(Long id) {
-        return userRepository.findById(id);
+    public User findById(Long id) {
+        Optional<User> user = userRepository.findById(id);
+        return user.orElseThrow(() -> new UserNotFoundException("User not found! Id: " + id));
     }
 
     public User save(User user){
