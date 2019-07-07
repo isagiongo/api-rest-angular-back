@@ -63,4 +63,14 @@ public class UserIntegrationTest {
                     .body("email", Is.is("john@domain.com"))
                     .statusCode(HttpStatus.OK.value());
     }
+
+    @Test
+    public void deveRetornarNotFoundSeUserNaoExistir() {
+        RestAssured
+                .given()
+                    .contentType(ContentType.JSON)
+                    .get("/users/9")
+                .then()
+                    .statusCode(HttpStatus.NOT_FOUND.value());
+    }
 }
