@@ -30,10 +30,10 @@ public class UserIntegrationTest {
     public void deveRetornarOKaoBuscarUsers() {
         RestAssured
                 .given()
-                .contentType(ContentType.JSON)
-                .get("/users")
+                    .contentType(ContentType.JSON)
+                    .get("/users")
                 .then()
-                .statusCode(HttpStatus.OK.value());
+                    .statusCode(HttpStatus.OK.value());
     }
 
     @Test
@@ -68,11 +68,11 @@ public class UserIntegrationTest {
         String json = "{\"name\":\"Isadora\",\"email\": \"\"}";
         RestAssured
                 .given()
-                .contentType(ContentType.JSON)
-                .body(json)
-                .post("/users")
+                    .contentType(ContentType.JSON)
+                    .body(json)
+                    .post("/users")
                 .then()
-                .statusCode(HttpStatus.BAD_REQUEST.value());
+                    .statusCode(HttpStatus.BAD_REQUEST.value());
     }
 
     @Test
@@ -80,11 +80,11 @@ public class UserIntegrationTest {
         String json = "{\"name\":\"Isadora\",\"email\": \"emailinvalido\"}";
         RestAssured
                 .given()
-                .contentType(ContentType.JSON)
-                .body(json)
-                .post("/users")
+                    .contentType(ContentType.JSON)
+                    .body(json)
+                    .post("/users")
                 .then()
-                .statusCode(HttpStatus.BAD_REQUEST.value());
+                    .statusCode(HttpStatus.BAD_REQUEST.value());
     }
 
     @Test
