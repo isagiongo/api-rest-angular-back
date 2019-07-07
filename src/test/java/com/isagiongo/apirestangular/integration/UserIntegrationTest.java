@@ -2,6 +2,7 @@ package com.isagiongo.apirestangular.integration;
 
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
+import net.bytebuddy.matcher.CollectionOneToOneMatcher;
 import org.hamcrest.core.Is;
 import org.junit.Before;
 import org.junit.Test;
@@ -47,12 +48,47 @@ public class UserIntegrationTest {
                     .statusCode(HttpStatus.CREATED.value())
                     .body("id", Is.is(6))
                     .body("name", Is.is("isadora"))
-                    .body("email", Is.is("isagiongo@hotmail.com"))
-        ;
+                    .body("email", Is.is("isagiongo@hotmail.com"));
     }
 
     @Test
-    public void deveRetornarUser() {
+    public void deveRetornarBadRequestSeNomeNaoForInformado() {
+        String json = "{\"name\":\"\",\"email\": \"isagiongo@hotmail.com\"}";
+        RestAssured
+                .given()
+                    .contentType(ContentType.JSON)
+                    .body(json)
+                    .post("/users")
+                .then()
+                    .statusCode(HttpStatus.BAD_REQUEST.value());
+    }
+
+    @Test
+    public void deveRetornarBadRequestSeEmailNaoForInformado() {
+        String json = "{\"name\":\"Isadora\",\"email\": \"\"}";
+        RestAssured
+                .given()
+                .contentType(ContentType.JSON)
+                .body(json)
+                .post("/users")
+                .then()
+                .statusCode(HttpStatus.BAD_REQUEST.value());
+    }
+
+    @Test
+    public void deveRetornarBadRequestSeEmailNaoForValido() {
+        String json = "{\"name\":\"Isadora\",\"email\": \"emailinvalido\"}";
+        RestAssured
+                .given()
+                .contentType(ContentType.JSON)
+                .body(json)
+                .post("/users")
+                .then()
+                .statusCode(HttpStatus.BAD_REQUEST.value());
+    }
+
+    @Test
+    public void deveRetornarUserSeIdExistir() {
         RestAssured
                 .given()
                     .contentType(ContentType.JSON)
@@ -65,7 +101,7 @@ public class UserIntegrationTest {
     }
 
     @Test
-    public void deveRetornarNotFoundSeUserNaoExistir() {
+    public void deveRetornarNotFoundSeIdNaoExistir() {
         RestAssured
                 .given()
                     .contentType(ContentType.JSON)
