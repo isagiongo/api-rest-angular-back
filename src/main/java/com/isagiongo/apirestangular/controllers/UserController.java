@@ -1,6 +1,7 @@
 package com.isagiongo.apirestangular.controllers;
 
 import com.isagiongo.apirestangular.models.User;
+import com.isagiongo.apirestangular.models.dtos.UserDTO;
 import com.isagiongo.apirestangular.repositories.UserRepository;
 import com.isagiongo.apirestangular.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,8 +37,9 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<User> addUser(@Valid @RequestBody User user) {
-        User userSave = userService.save(user);
-        return ResponseEntity.status(HttpStatus.CREATED).body(userSave);
+    public ResponseEntity<User> addUser(@Valid @RequestBody UserDTO userDTO) {
+        User user = userService.fromDto(userDTO);
+        user = userService.save(user);
+        return ResponseEntity.status(HttpStatus.CREATED).body(user);
     }
 }
