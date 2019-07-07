@@ -109,4 +109,24 @@ public class UserIntegrationTest {
                 .then()
                     .statusCode(HttpStatus.NOT_FOUND.value());
     }
+
+    @Test
+    public void deveRetornarNotFoundSeIdNaoExistirAoTentarDeletar() {
+        RestAssured
+                .given()
+                    .contentType(ContentType.JSON)
+                    .delete("/users/9")
+                .then()
+                    .statusCode(HttpStatus.NOT_FOUND.value());
+    }
+
+    @Test
+    public void deveRetornarOKAoDeletarUserExistente() {
+        RestAssured
+                .given()
+                    .contentType(ContentType.JSON)
+                    .delete("/users/3")
+                .then()
+                    .statusCode(HttpStatus.OK.value());
+    }
 }

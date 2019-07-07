@@ -31,10 +31,13 @@ public class UserService {
         return userRepository.save(user);
     }
 
+    public void deleteById(Long id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException("User not found! Id: " + id));
+        userRepository.deleteById(user.getId());
+    }
+
     public User fromDto(UserDTO userDTO) {
         return new User(userDTO.getName(), userDTO.getEmail());
     }
-
-
-
 }
