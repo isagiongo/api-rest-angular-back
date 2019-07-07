@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/users")
@@ -22,9 +23,16 @@ public class UserController {
     }
 
     @GetMapping
-    public ResponseEntity<List<User>> getUser(){
+    public ResponseEntity<List<User>> getUsers(){
         List<User> users = (List<User>) userService.findAll();
         return ResponseEntity.status(HttpStatus.OK).body(users);
+    }
+
+    @GetMapping(value="/{id}")
+    public ResponseEntity<User> getUserById(@PathVariable Long id) {
+        return userService.findById(id)
+                .map(user -> ResponseEntity.status(HttpStatus.OK).body(user))
+                .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
 
     @PostMapping

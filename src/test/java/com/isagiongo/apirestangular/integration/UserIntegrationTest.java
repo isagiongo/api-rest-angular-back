@@ -50,4 +50,17 @@ public class UserIntegrationTest {
                     .body("email", Is.is("isagiongo@hotmail.com"))
         ;
     }
+
+    @Test
+    public void deveRetornarUser() {
+        RestAssured
+                .given()
+                    .contentType(ContentType.JSON)
+                    .get("/users/1")
+                .then()
+                    .body("id", Is.is(1))
+                    .body("name", Is.is("John"))
+                    .body("email", Is.is("john@domain.com"))
+                    .statusCode(HttpStatus.OK.value());
+    }
 }
