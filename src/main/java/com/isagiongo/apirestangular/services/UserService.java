@@ -32,9 +32,8 @@ public class UserService {
     }
 
     public void deleteById(Long id) {
-        User user = userRepository.findById(id)
-                .orElseThrow(() -> new UserNotFoundException("User not found! Id: " + id));
-        userRepository.deleteById(user.getId());
+        findById(id);
+        userRepository.deleteById(id);
     }
 
     public User fromDto(UserDTO userDTO) {
